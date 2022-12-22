@@ -6,18 +6,90 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-  // Further reading:
-  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Example {
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  fetchedAt DateTime @updatedAt
+}
+
+model DiscordUser {
+  id            String   @id
+  username      String   @db.Text
+  discriminator String   @db.Text
+  avatar        String?  @db.Text
+  bot           Boolean?
+  banner        String?  @db.Text
+  accent_color  Int?
+  public_flags  Int?
+
+  fetched_at DateTime @updatedAt
+}
+
+model DiscordGuild {
+  id                         String   @id
+  name                       String   @db.Text
+  icon                       String?  @db.Text
+  splash                     String?  @db.Text
+  discovery_splash           String?  @db.Text
+  emojis                     Json[]
+  features                   String[]
+  approximate_member_count   Int?
+  approximate_presence_count Int?
+  description                String?  @db.Text
+  stickers                   Json[]
+  instant_invite             String?  @db.Text
+  members                    Json[]
+  channels                   Json[]
+  presence_count             Int?
+
+  fetched_at DateTime @updatedAt
+}
+
+model DiscordInvite {
+  code                       String    @id
+  guild                      Json?
+  channel                    Json?
+  inviter                    Json?
+  target_type                Int?
+  target_user                Json?
+  target_application         Json?
+  approximate_presence_count Int?
+  approximate_member_count   Int?
+  expires_at                 DateTime?
+  guild_scheduled_event      Json?
+
+  fetched_at DateTime @default(now())
+}
+
+model DiscordApplication {
+  id                                String   @id
+  name                              String   @db.Text
+  icon                              String?  @db.Text
+  description                       String   @db.Text
+  bot_public                        Boolean
+  bot_require_code_grant            Boolean
+  terms_of_service_url              String?  @db.Text
+  privacy_policy_url                String?  @db.Text
+  verify_key                        String
+  primary_sku_id                    String?
+  slug                              String?
+  flags                             Int
+  tags                              String[]
+  custom_install_url                String?
+  role_connections_verification_url String?
+
+  fetched_at DateTime @updatedAt
+}
+
+model DiscordSnowflakes {
+  id     String
+  type   String
+  exists Boolean
+
+  @@id([id, type])
 }
 
 // Necessary for Next auth
@@ -27,12 +99,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? // @db.Text
-  access_token      String? // @db.Text
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? // @db.Text
+  id_token          String? @db.Text
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
