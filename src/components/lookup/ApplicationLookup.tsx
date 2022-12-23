@@ -11,51 +11,23 @@ import { trpc } from "../../utils/trpc";
 
 export default function ApplicationLookup() {
   const [appId, setAppId] = useState("");
-  const [result, setResult] = useState({});
 
   const router = useRouter();
 
-  const { data, refetch } = trpc.lookup.getApplication.useQuery(appId, {
+  const query = trpc.lookup.getApplication.useQuery(appId, {
     enabled: false,
   });
 
   useEffect(() => {
     if (!router.isReady) return;
     if (router.query.app_id && !appId) {
-      setAppId(router.query.app_id);
-      lookupApplication(router.query.app_id);
+      setAppId(router.query.app_id.toString());
+      query.refetch();
     }
   }, [router]);
 
-  function lookupApplication(newAppId) {
-    if (!newAppId) return;
-
-    setResult({ loading: true });
-    fetch(`https://discord.com/api/applications/${newAppId}/rpc`).then(
-      async (resp) => {
-        if (!resp.ok) {
-          setResult({ error: "The application doesn't seem to exist." });
-        } else {
-          setResult({ data: await resp.json() });
-        }
-      }
-    );
-  }
-
-  function handleInput(e) {
+  function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     setAppId(e.target.value.replace(/\D/g, "").trim());
-  }
-
-  function appDescription() {
-    if (result.data.description && result.data.description.length) {
-      return result.data.description;
-    }
-
-    if (result.data.summary && result.data.summary.length) {
-      return result.data.summary;
-    }
-
-    return "No description";
   }
 
   return (
@@ -68,7 +40,7 @@ export default function ApplicationLookup() {
         className="flex flex-col text-xl md:flex-row"
         onSubmit={(e) => {
           e.preventDefault();
-          lookupApplication(appId);
+          query.refetch();
         }}
       >
         <input
@@ -86,9 +58,9 @@ export default function ApplicationLookup() {
         </button>
       </form>
 
-      {result.error ? (
-        <div className="mt-3 text-red-400">{result.error}</div>
-      ) : result.loading ? (
+      {query.error ? (
+        <div className="mt-3 text-red-400">{query.error.message}</div>
+      ) : query.isFetching ? (
         <ReactLoading
           type="bars"
           color="#dbdbdb"
@@ -96,19 +68,21 @@ export default function ApplicationLookup() {
           width={100}
           className="my-8 mx-auto"
         />
-      ) : result.data ? (
+      ) : query.data ? (
         <div className="my-10">
           <div className="mb-8 flex justify-center">
             <div className="mr-4 flex-shrink-0">
               <img
-                src={applicationIcon(result.data, { size: 128 })}
+                src={applicationIcon(query.data, { size: 128 })}
                 alt=""
                 className="h-20 w-20 rounded-full bg-dark-4"
               />
             </div>
             <div className="max-w-lg">
-              <div className="text-2xl">{result.data.name}</div>
-              <div className="text-gray-400">{appDescription()}</div>
+              <div className="text-2xl">{query.data.name}</div>
+              <div className="text-gray-400">
+                {query.data.description || "No description"}
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 md:justify-items-center">
@@ -117,13 +91,11 @@ export default function ApplicationLookup() {
               <div className="flex text-lg">
                 <div
                   className={`mr-2 ${
-                    result.data.bot_public ? "text-green-400" : "text-red-400"
+                    query.data.bot_public ? "text-green-400" : "text-red-400"
                   }`}
                 >
                   <FontAwesomeIcon
-                    icon={
-                      result.data.bot_public ? faCheckCircle : faTimesCircle
-                    }
+                    icon={query.data.bot_public ? faCheckCircle : faTimesCircle}
                   />
                 </div>
                 <div className="text-gray-300">Public Bot</div>
@@ -131,14 +103,14 @@ export default function ApplicationLookup() {
               <div className="flex text-lg">
                 <div
                   className={`mr-2 ${
-                    result.data.bot_require_code_grant
+                    query.data.bot_require_code_grant
                       ? "text-green-400"
                       : "text-red-400"
                   }`}
                 >
                   <FontAwesomeIcon
                     icon={
-                      result.data.bot_require_code_grant
+                      query.data.bot_require_code_grant
                         ? faCheckCircle
                         : faTimesCircle
                     }
@@ -149,14 +121,14 @@ export default function ApplicationLookup() {
               <div className="flex text-lg">
                 <div
                   className={`mr-2 ${
-                    hasBitFlag(result.data.flags, 12)
+                    hasBitFlag(query.data.flags, 12)
                       ? "text-green-400"
                       : "text-red-400"
                   }`}
                 >
                   <FontAwesomeIcon
                     icon={
-                      hasBitFlag(result.data.flags, 12)
+                      hasBitFlag(query.data.flags, 12)
                         ? faCheckCircle
                         : faTimesCircle
                     }
@@ -167,14 +139,14 @@ export default function ApplicationLookup() {
               <div className="flex text-lg">
                 <div
                   className={`mr-2 ${
-                    hasBitFlag(result.data.flags, 14)
+                    hasBitFlag(query.data.flags, 14)
                       ? "text-green-400"
                       : "text-red-400"
                   }`}
                 >
                   <FontAwesomeIcon
                     icon={
-                      hasBitFlag(result.data.flags, 14)
+                      hasBitFlag(query.data.flags, 14)
                         ? faCheckCircle
                         : faTimesCircle
                     }
@@ -185,14 +157,14 @@ export default function ApplicationLookup() {
               <div className="flex text-lg">
                 <div
                   className={`mr-2 ${
-                    hasBitFlag(result.data.flags, 18)
+                    hasBitFlag(query.data.flags, 18)
                       ? "text-green-400"
                       : "text-red-400"
                   }`}
                 >
                   <FontAwesomeIcon
                     icon={
-                      hasBitFlag(result.data.flags, 18)
+                      hasBitFlag(query.data.flags, 18)
                         ? faCheckCircle
                         : faTimesCircle
                     }
@@ -204,10 +176,10 @@ export default function ApplicationLookup() {
             <div>
               <div className="mb-1 text-xl font-bold">Policies</div>
               <div className="text-lg">
-                {result.data.terms_of_service_url ? (
+                {query.data.terms_of_service_url ? (
                   <div>
                     <a
-                      href={result.data.terms_of_service_url}
+                      href={query.data.terms_of_service_url}
                       target="_blank"
                       className="text-blue-400 hover:text-blue-300"
                     >
@@ -217,10 +189,10 @@ export default function ApplicationLookup() {
                 ) : (
                   ""
                 )}
-                {result.data.privacy_policy_url ? (
+                {query.data.privacy_policy_url ? (
                   <div>
                     <a
-                      href={result.data.privacy_policy_url}
+                      href={query.data.privacy_policy_url}
                       target="_blank"
                       className="text-blue-400 hover:text-blue-300"
                     >
@@ -230,8 +202,8 @@ export default function ApplicationLookup() {
                 ) : (
                   ""
                 )}
-                {!result.data.terms_of_service_url &&
-                !result.data.privacy_policy_url ? (
+                {!query.data.terms_of_service_url &&
+                !query.data.privacy_policy_url ? (
                   <div>-</div>
                 ) : (
                   ""

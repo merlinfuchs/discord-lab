@@ -2,6 +2,7 @@ import { router, protectedProcedure } from "../trpc";
 import { prisma } from "../../db/client";
 import { REST } from "@discordjs/rest";
 import { APIGuild, APIUser, Routes } from "discord-api-types/v10";
+import { rememberSnowflakes } from "./lookup";
 
 export const accountRouter = router({
   getUser: protectedProcedure.query(async ({ ctx }) => {
@@ -20,6 +21,10 @@ export const accountRouter = router({
       .then((u) => u as APIUser)
       .catch(() => null);
 
+    if (user) {
+      rememberSnowflakes([user.id], "USER");
+    }
+
     return user;
   }),
   getGuilds: protectedProcedure.query(async ({ ctx }) => {
@@ -37,6 +42,11 @@ export const accountRouter = router({
       .get(Routes.userGuilds(), { authPrefix: "Bearer" })
       .then((g) => g as APIGuild[])
       .catch(() => []);
+
+    rememberSnowflakes(
+      guilds.map((g) => g.id),
+      "GUILD"
+    );
 
     return guilds;
   }),

@@ -14,13 +14,33 @@ import {
   DiscordApplication,
   DiscordGuild,
   DiscordInvite,
+  DiscordSnowflakeType,
   DiscordUser,
 } from "@prisma/client";
 import { env } from "../../../env/server.mjs";
+import { snowlfakeTimestamp } from "../../../utils/discord";
 
 const rest = new REST({ version: "10" }).setToken(env.DISCORD_BOT_TOKEN);
 
-async function getUser(id: string): Promise<DiscordUser | null> {
+export const lookupRouter = router({
+  getUser: protectedProcedure
+    .input(z.string())
+    .query(({ input }) => getUser(input)),
+  getGuild: protectedProcedure
+    .input(z.string())
+    .query(({ input }) => getGuild(input)),
+  getApplication: protectedProcedure
+    .input(z.string())
+    .query(({ input }) => getApplication(input)),
+  getInvite: protectedProcedure
+    .input(z.string())
+    .query(({ input }) => getInvite(input)),
+  getSnowflake: protectedProcedure
+    .input(z.string())
+    .query(({ input }) => getSnowflake(input)),
+});
+
+export async function getUser(id: string): Promise<DiscordUser | null> {
   const cached = await prisma.discordUser.findFirst({
     where: { id, fetched_at: { gt: new Date(Date.now() - 1000 * 60 * 60) } },
   });
@@ -30,6 +50,9 @@ async function getUser(id: string): Promise<DiscordUser | null> {
 
   try {
     const user = (await rest.get(Routes.user(id))) as APIUser;
+
+    rememberSnowflakes([id], "USER");
+
     const row: DiscordUser = {
       id: user.id,
       username: user.username,
@@ -53,7 +76,7 @@ async function getUser(id: string): Promise<DiscordUser | null> {
   }
 }
 
-async function getGuild(id: string): Promise<DiscordGuild | null> {
+export async function getGuild(id: string): Promise<DiscordGuild | null> {
   const cached = await prisma.discordGuild.findFirst({
     where: { id, fetched_at: { gt: new Date(Date.now() - 1000 * 60 * 60) } },
   });
@@ -77,13 +100,27 @@ async function getGuild(id: string): Promise<DiscordGuild | null> {
       return null;
     }
 
+    rememberSnowflakes([id], "GUILD");
+    rememberSnowflakes(
+      preview?.emojis?.filter((e) => !!e.id).map((e) => e.id!) || [],
+      "EMOJI"
+    );
+    rememberSnowflakes(
+      preview?.stickers?.filter((e) => !!e.id).map((e) => e.id!) || [],
+      "STICKER"
+    );
+    rememberSnowflakes(
+      widget?.channels?.filter((e) => !!e.id).map((e) => e.id!) || [],
+      "CHANNEL"
+    );
+
     const row: DiscordGuild = {
       id: preview?.id || widget?.id || "",
       name: preview?.name || widget?.name || "",
       icon: preview?.icon || null,
       splash: preview?.splash || null,
       discovery_splash: preview?.discovery_splash || null,
-      emojis: (preview?.emojis || []) as any[],
+      emojis: (preview?.emojis || []) as [],
       features: preview?.features || [],
       approximate_member_count: preview?.approximate_member_count || null,
       approximate_presence_count: preview?.approximate_presence_count || null,
@@ -107,7 +144,9 @@ async function getGuild(id: string): Promise<DiscordGuild | null> {
   }
 }
 
-async function getApplication(id: string): Promise<DiscordApplication | null> {
+export async function getApplication(
+  id: string
+): Promise<DiscordApplication | null> {
   const cached = await prisma.discordApplication.findFirst({
     where: { id, fetched_at: { gt: new Date(Date.now() - 1000 * 60 * 60) } },
   });
@@ -117,6 +156,9 @@ async function getApplication(id: string): Promise<DiscordApplication | null> {
 
   try {
     const app = (await rest.get(`/applications/${id}/rpc`)) as APIApplication;
+
+    rememberSnowflakes([id], "APPLICATION");
+
     const row: DiscordApplication = {
       id: app.id,
       name: app.name,
@@ -148,7 +190,7 @@ async function getApplication(id: string): Promise<DiscordApplication | null> {
   }
 }
 
-async function getInvite(code: string): Promise<DiscordInvite | null> {
+export async function getInvite(code: string): Promise<DiscordInvite | null> {
   const cached = await prisma.discordInvite.findFirst({
     where: { code, fetched_at: { gt: new Date(Date.now() - 1000 * 60 * 60) } },
   });
@@ -160,6 +202,23 @@ async function getInvite(code: string): Promise<DiscordInvite | null> {
     const invite = (await rest.get(Routes.invite(code), {
       query: new URLSearchParams({ with_counts: "1", with_expiration: "1" }),
     })) as APIInvite;
+
+    if (invite.guild) {
+      rememberSnowflakes([invite.guild.id], "GUILD");
+    }
+
+    if (invite.channel) {
+      rememberSnowflakes([invite.channel.id], "CHANNEL");
+    }
+
+    if (invite.inviter) {
+      rememberSnowflakes([invite.inviter.id], "USER");
+    }
+
+    if (invite.target_user) {
+      rememberSnowflakes([invite.target_user.id], "USER");
+    }
+
     const row = {
       code: invite.code,
       guild: (invite.guild as any) || undefined,
@@ -186,17 +245,27 @@ async function getInvite(code: string): Promise<DiscordInvite | null> {
   }
 }
 
-export const lookupRouter = router({
-  getUser: protectedProcedure
-    .input(z.string())
-    .query(({ input }) => getUser(input)),
-  getGuild: protectedProcedure
-    .input(z.string())
-    .query(({ input }) => getGuild(input)),
-  getApplication: protectedProcedure
-    .input(z.string())
-    .query(({ input }) => getApplication(input)),
-  getInvite: protectedProcedure
-    .input(z.string())
-    .query(({ input }) => getInvite(input)),
-});
+export async function getSnowflake(id: string) {
+  const timestamp = snowlfakeTimestamp(id);
+  if (!timestamp) {
+    return null;
+  }
+
+  const info = await prisma.discordSnowflake.findFirst({
+    where: { id, exists: true },
+  });
+
+  return {
+    timestamp,
+    type: info?.type || null,
+  };
+}
+
+export async function rememberSnowflakes(
+  ids: string[],
+  type: DiscordSnowflakeType
+) {
+  await prisma.discordSnowflake.createMany({
+    data: ids.map((id) => ({ id, type, exists: true })),
+  });
+}

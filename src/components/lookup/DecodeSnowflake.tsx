@@ -2,37 +2,24 @@ import { useState } from "react";
 import { formatDateTime, snowlfakeTimestamp } from "../../utils/discord";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { trpc } from "../../utils/trpc";
 
 export default function DecodeSnowflake() {
   const [snowflake, setSnowflake] = useState("");
-  const [result, setResult] = useState<{
-    data?: { timestamp: Date };
-    error?: string;
-  }>({});
 
   const router = useRouter();
+
+  const query = trpc.lookup.getSnowflake.useQuery(snowflake, {
+    enabled: false,
+  });
 
   useEffect(() => {
     if (!router.isReady) return;
     if (router.query.id && !snowflake) {
       setSnowflake(router.query.id.toString());
-      decodeSnowflake(router.query.id.toString());
+      query.refetch();
     }
   }, [router]);
-
-  function decodeSnowflake(newSnowflake: string) {
-    if (!newSnowflake) return;
-
-    const timestamp = snowlfakeTimestamp(newSnowflake);
-    if (!timestamp) {
-      setResult({
-        error:
-          "The snowflake seems to be invalid. Please make sure that you have entered it correctly!",
-      });
-    } else {
-      setResult({ data: { timestamp } });
-    }
-  }
 
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     setSnowflake(e.target.value.replace(/\D/g, "").trim());
@@ -56,7 +43,7 @@ export default function DecodeSnowflake() {
         className="flex flex-col text-xl md:flex-row"
         onSubmit={(e) => {
           e.preventDefault();
-          decodeSnowflake(snowflake);
+          query.refetch();
         }}
       >
         <input
@@ -74,20 +61,20 @@ export default function DecodeSnowflake() {
         </button>
       </form>
 
-      {result.error ? (
-        <div className="mt-3 text-red-400">{result.error}</div>
-      ) : result.data ? (
+      {query.error ? (
+        <div className="mt-3 text-red-400">{query.error.message}</div>
+      ) : query.data ? (
         <div className="mt-12 mb-5 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:justify-items-center">
           <div>
             <div className="mb-2 text-xl font-bold">Created At</div>
             <div className="text-xl text-gray-300">
-              {formatDateTime(result.data.timestamp)}
+              {formatDateTime(query.data.timestamp)}
             </div>
           </div>
           <div>
             <div className="mb-2 text-xl font-bold">UNIX Timestamp</div>
             <div className="text-xl text-gray-300">
-              {result.data.timestamp.getTime() / 1000}
+              {query.data.timestamp.getTime() / 1000}
             </div>
           </div>
         </div>

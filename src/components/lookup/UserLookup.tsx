@@ -14,26 +14,26 @@ import { trpc } from "../../utils/trpc";
 
 export const badges = {
   0: ["Discord Employee", "staff.svg"],
-  1: ["Partnered Server Owner", "partner.svg"],
-  2: ["HypeSquad Events", "hypesquadevents.svg"],
-  3: ["Bug Hunter", "bughunter.svg"],
-  6: ["HypeSquad Bravery", "hypesquadbravery.svg"],
-  7: ["HypeSquad Brilliance", "hypesquadbrilliance.svg"],
-  8: ["HypeSquad Balance", "hypesquadbalance.svg"],
-  9: ["Early Supporter", "earlysupporter.svg"],
-  14: ["Bug Hunter", "bughunter2.svg"],
-  17: ["Early Verified Bot Developer", "verifiedbotdev.svg"],
-  18: ["Discord Certified Moderator", "certifiedmod.svg"],
+  1: ["Partnered Server Owner", "partnered_server_owner.svg"],
+  2: ["HypeSquad Events", "hypesquad_events.svg"],
+  3: ["Bug Hunter", "bug_hunter_level_1.svg"],
+  6: ["HypeSquad Bravery", "hapesquad_bravery.svg"],
+  7: ["HypeSquad Brilliance", "hypesquad_brilliance.svg"],
+  8: ["HypeSquad Balance", "hypesquad_balance.svg"],
+  9: ["Early Supporter", "early_supporter.svg"],
+  14: ["Bug Hunter", "bug_hunter_level_2.svg"],
+  17: ["Early Verified Bot Developer", "early_verified_developer.svg"],
+  18: ["Discord Certified Moderator", "certified_moderator.svg"],
+  22: ["Active Developer", "active_developer.svg"],
 };
 
 export default function UserLookup() {
-  const [userId, setUserId] = useState("123");
-  const [result, setResult] = useState({});
+  const [userId, setUserId] = useState("");
 
   const router = useRouter();
 
   const query = trpc.lookup.getUser.useQuery(userId, {
-    enabled: true,
+    enabled: false,
   });
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export default function UserLookup() {
 
       {query.error ? (
         <div className="mt-3 text-red-400">{query.error.message}</div>
-      ) : query.isLoading ? (
+      ) : query.isFetching ? (
         <div className="my-8 flex flex-col items-center">
           <ReactLoading type="bars" color="#dbdbdb" height={128} width={100} />
           <div className="text-xl text-gray-300">Fetching information ...</div>
@@ -101,7 +101,7 @@ export default function UserLookup() {
           <div
             className="mt-5 h-32 rounded-t-md bg-yellow-400 md:h-48 lg:h-64"
             style={{
-              backgroundColor: intToHexColor(query.data.accentColor),
+              backgroundColor: intToHexColor(query.data.accent_color || 0),
               backgroundImage: `url("${userBanner(query.data)}")`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
@@ -117,13 +117,13 @@ export default function UserLookup() {
               />
             </div>
             <div className="flex flex-wrap pt-4">
-              {Object.keys(badges).map((bit) =>
-                hasBitFlag(result.data.public_flags, bit) ? (
-                  <Tooltip title={badges[bit][0]} key={bit}>
+              {Object.entries(badges).map(([bit, value]) =>
+                hasBitFlag(query.data!.public_flags, parseInt(bit)) ? (
+                  <Tooltip title={value[0]} key={bit}>
                     <img
-                      src={`/discord-badges/${badges[bit][1]}`}
-                      alt={badges[bit][0]}
-                      className="mr-2 mb-2 h-6 w-6"
+                      src={`/badges/${value[1]}`}
+                      alt={value[0]}
+                      className="mr-2 mb-2 h-8 w-8"
                     />
                   </Tooltip>
                 ) : (
@@ -133,15 +133,17 @@ export default function UserLookup() {
             </div>
           </div>
           <div className="mb-6 px-5 text-2xl font-bold">
-            <span>{result.data.username}</span>
-            <span className="text-gray-400">#{result.data.discriminator}</span>
+            <span>{query.data.username}</span>
+            <span className="text-gray-400">#{query.data.discriminator}</span>
           </div>
 
           <div className="grid grid-cols-1 gap-8 px-5 md:grid-cols-3">
             <div>
               <div className="mb-2 text-xl font-bold">Created At</div>
               <div className="text-xl text-gray-300">
-                {formatDateTime(snowlfakeTimestamp(result.data.id))}
+                {formatDateTime(
+                  snowlfakeTimestamp(query.data.id) || new Date()
+                )}
               </div>
             </div>
           </div>

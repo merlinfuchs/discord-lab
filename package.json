@@ -30,7 +30,7 @@
     "react-dom": "18.2.0",
     "react-loading": "^2.0.3",
     "react-select": "^5.7.0",
-    "superjson": "1.9.1",
+    "superjson": "^1.12.1",
     "yarn": "^1.22.19",
     "zod": "^3.18.0"
   },

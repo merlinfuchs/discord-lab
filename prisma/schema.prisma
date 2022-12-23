@@ -84,12 +84,22 @@ model DiscordApplication {
   fetched_at DateTime @updatedAt
 }
 
-model DiscordSnowflakes {
+model DiscordSnowflake {
   id     String
-  type   String
+  type   DiscordSnowflakeType
   exists Boolean
 
   @@id([id, type])
+}
+
+enum DiscordSnowflakeType {
+  USER
+  GUILD
+  CHANNEL
+  ROLE
+  APPLICATION
+  EMOJI
+  STICKER
 }
 
 // Necessary for Next auth
