@@ -19,7 +19,7 @@ const discordBadges: { [key: number]: [string, number] } = {
   6: ["hypesquad_bravery.svg", 1],
   7: ["hypesquad_brilliance.svg", 1],
   8: ["hypesquad_balance.svg", 1],
-  9: ["early_supporter.svg", 1.3],
+  9: ["early_supporter.svg", 1],
   14: ["bug_hunter_level_2.svg", 1],
   17: ["early_verified_developer.svg", 1],
   18: ["certified_moderator.svg", 1],

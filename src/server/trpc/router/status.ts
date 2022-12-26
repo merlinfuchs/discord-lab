@@ -13,7 +13,6 @@ async function updateStagingStatus() {
     const resp = await fetch("https://staging.discord.co", {
       redirect: "manual",
     });
-    console.log(resp.status);
     stagingStatus.open = resp.status >= 200 && resp.status < 300;
     stagingStatus.updatedAt = Date.now();
   } catch {}

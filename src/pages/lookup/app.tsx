@@ -1,8 +1,16 @@
 import React from "react";
 import ApplicationLookup from "../../components/lookup/ApplicationLookup";
 import Head from "next/head";
+import { useSession } from "next-auth/react";
+import LoginPrompt from "../../components/LoginPrompt";
 
 export default function ApplicationLookupTool() {
+  const { data: session } = useSession();
+
+  if (!session) {
+    return <LoginPrompt />;
+  }
+
   return (
     <div className="mt-16 flex justify-center px-3 md:px-5">
       <Head>
@@ -15,7 +23,7 @@ export default function ApplicationLookupTool() {
           Get information about a Discord application aka bot
         </div>
         <div className="mb-16">
-          <ApplicationLookup />
+          {session ? <ApplicationLookup /> : <LoginPrompt />}
         </div>
       </div>
     </div>

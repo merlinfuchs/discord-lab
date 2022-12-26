@@ -1,8 +1,12 @@
 import React from "react";
 import Head from "next/head";
 import UserLookup from "../../components/lookup/UserLookup";
+import { useSession } from "next-auth/react";
+import LoginPrompt from "../../components/LoginPrompt";
 
 export default function UserLookupTool() {
+  const { data: session } = useSession();
+
   return (
     <div className="mt-16 flex justify-center px-3 md:px-5">
       <Head>
@@ -15,7 +19,7 @@ export default function UserLookupTool() {
           Get information about a user from the User ID
         </div>
         <div className="mb-16">
-          <UserLookup />
+          {session ? <UserLookup /> : <LoginPrompt />}
         </div>
       </div>
     </div>

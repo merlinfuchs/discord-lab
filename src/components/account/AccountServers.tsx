@@ -1,10 +1,10 @@
-import PleaseLogin from "../PleaseLogin";
 import { guildIcon, hasBitFlag } from "../../utils/discord";
 import Tooltip from "../Tooltip";
 import { useState } from "react";
 import CustomSelect from "../CustomSelect";
 import { trpc } from "../../utils/trpc";
 import { GuildFeature } from "discord-api-types/v10";
+import ReactLoading from "react-loading";
 
 interface SelectFilters {
   label: string;
@@ -39,7 +39,9 @@ export default function AccountServers() {
   const [filters, setFilters] = useState<SelectFilters[]>([]);
 
   if (!guilds) {
-    return <PleaseLogin />;
+    return (
+      <ReactLoading type="bars" color="#dbdbdb" height={128} width={100} />
+    );
   }
 
   let filteredGuilds = guilds;

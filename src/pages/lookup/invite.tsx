@@ -1,8 +1,16 @@
 import React from "react";
 import ResolveInvite from "../../components/lookup/ResolveInvite";
 import Head from "next/head";
+import LoginPrompt from "../../components/LoginPrompt";
+import { useSession } from "next-auth/react";
 
 export default function LookupTool() {
+  const { data: session } = useSession();
+
+  if (!session) {
+    return <LoginPrompt />;
+  }
+
   return (
     <div className="mt-16 flex justify-center px-3 md:px-5">
       <Head>
@@ -15,7 +23,7 @@ export default function LookupTool() {
           Extract information about a server and more from an invite
         </div>
         <div className="mb-16">
-          <ResolveInvite />
+          {session ? <ResolveInvite /> : <LoginPrompt />}
         </div>
       </div>
     </div>

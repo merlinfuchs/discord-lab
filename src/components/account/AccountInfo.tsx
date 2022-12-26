@@ -1,4 +1,3 @@
-import PleaseLogin from "../PleaseLogin";
 import {
   formatDateTime,
   hasBitFlag,
@@ -15,12 +14,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { trpc } from "../../utils/trpc";
+import ReactLoading from "react-loading";
 
 export default function AccountInfo() {
   const { data: user } = trpc.account.getUser.useQuery();
 
   if (!user) {
-    return <PleaseLogin />;
+    return (
+      <ReactLoading type="bars" color="#dbdbdb" height={128} width={100} />
+    );
   }
 
   return (
@@ -50,7 +52,7 @@ export default function AccountInfo() {
             hasBitFlag(user.flags as number, parseInt(bit)) ? (
               <Tooltip title={value[0]!} key={bit}>
                 <img
-                  src={`/discord-badges/${value[1]}`}
+                  src={`/badges/${value[1]}`}
                   alt={value[0]}
                   className="mr-2 mb-2 h-6 w-6"
                 />
@@ -62,7 +64,7 @@ export default function AccountInfo() {
           {user.premium_type === 2 ? (
             <Tooltip title="Nitro">
               <img
-                src={`/discord-badges/nitro.svg`}
+                src={`/badges/nitro.svg`}
                 alt="Nitro"
                 className="mr-2 mb-2 h-6 w-6"
               />
@@ -70,7 +72,7 @@ export default function AccountInfo() {
           ) : user.premium_type === 1 ? (
             <Tooltip title="Nitro Classic">
               <img
-                src={`/discord-badges/nitro.svg`}
+                src={`/badges/nitro.svg`}
                 alt="Nitro Classic"
                 className="mr-2 mb-2 h-6 w-6"
               />
@@ -105,6 +107,7 @@ export default function AccountInfo() {
           >
             <FontAwesomeIcon
               icon={user.mfa_enabled ? faCheckCircle : faTimesCircle}
+              className="h-5 w-5"
             />
           </div>
         </div>

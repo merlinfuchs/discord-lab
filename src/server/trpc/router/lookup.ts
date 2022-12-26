@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, protectedProcedure } from "../trpc";
+import { router, protectedProcedure, publicProcedure } from "../trpc";
 import { REST } from "@discordjs/rest";
 import {
   Routes,
@@ -35,7 +35,7 @@ export const lookupRouter = router({
   getInvite: protectedProcedure
     .input(z.string())
     .query(({ input }) => getInvite(input)),
-  getSnowflake: protectedProcedure
+  getSnowflake: publicProcedure
     .input(z.string())
     .query(({ input }) => getSnowflake(input)),
 });

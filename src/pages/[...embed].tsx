@@ -66,8 +66,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     id = args[0]!;
   }
 
-  console.log(id);
-
   const snowflake = await getSnowflake(id);
   if (!snowflake) {
     return {

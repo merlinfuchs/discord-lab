@@ -47,14 +47,6 @@ export default function NavBar() {
               >
                 <div className="mb-3 flex flex-auto flex-col space-y-2 lg:mb-0 lg:flex-row lg:items-center lg:space-y-0">
                   <Link
-                    href="/experiments"
-                    className={`mr-8 text-xl hover:text-blue-400 ${
-                      isPathActive("/experiments") ? "text-blue-400" : ""
-                    }`}
-                  >
-                    Experiments
-                  </Link>
-                  <Link
                     href="/status"
                     className={`mr-8 text-xl hover:text-blue-400 ${
                       isPathActive("/status") ? "text-blue-400" : ""

@@ -1,8 +1,16 @@
 import React from "react";
 import GuildLookup from "../../components/lookup/GuildLookup";
 import Head from "next/head";
+import { useSession } from "next-auth/react";
+import LoginPrompt from "../../components/LoginPrompt";
 
 export default function LookupTool() {
+  const { data: session } = useSession();
+
+  if (!session) {
+    return <LoginPrompt />;
+  }
+
   return (
     <div className="mt-16 flex justify-center px-3 md:px-5">
       <Head>
@@ -15,7 +23,7 @@ export default function LookupTool() {
           Get information about a server from the Server ID
         </div>
         <div className="mb-16">
-          <GuildLookup />
+          {session ? <GuildLookup /> : <LoginPrompt />}
         </div>
       </div>
     </div>
