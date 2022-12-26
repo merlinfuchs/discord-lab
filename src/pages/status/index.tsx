@@ -17,6 +17,7 @@ export default function StatusTool() {
           <a
             href="https://staging.discord.co"
             target="_blank"
+            rel="noreferrer"
             className="text-blue-200"
           >
             Discord Staging

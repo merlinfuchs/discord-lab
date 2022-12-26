@@ -40,7 +40,7 @@ export const accountRouter = router({
 
     const guilds = await rest
       .get(Routes.userGuilds(), { authPrefix: "Bearer" })
-      .then((g) => g as APIGuild[])
+      .then((g) => g as (APIGuild & { id: string })[])
       .catch(() => []);
 
     rememberSnowflakes(

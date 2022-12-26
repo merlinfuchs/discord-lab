@@ -1,3 +1,6 @@
+//@ts-ignore
+import emojiNames from "emoji-name-map";
+
 const DISCORD_CDN = "https://cdn.discordapp.com";
 
 export function userAvatar(
@@ -12,7 +15,7 @@ export function userAvatar(
     if (avatar.startsWith("a_")) {
       return `${DISCORD_CDN}/avatars/${id}/${avatar}.gif?size=${size}`;
     } else {
-      return `${DISCORD_CDN}/avatars/${id}/${avatar}.webp?size=${size}`;
+      return `${DISCORD_CDN}/avatars/${id}/${avatar}.png?size=${size}`;
     }
   } else {
     return `${DISCORD_CDN}/embed/avatars/${
@@ -26,14 +29,14 @@ export function userBanner({
   banner,
 }: {
   id: string;
-  banner: string | null;
+  banner?: string | null | undefined;
 }) {
   if (!banner) return null;
 
   if (banner.startsWith("a_")) {
     return `${DISCORD_CDN}/banners/${id}/${banner}.gif?size=1024`;
   } else {
-    return `${DISCORD_CDN}/banners/${id}/${banner}.webp?size=1024`;
+    return `${DISCORD_CDN}/banners/${id}/${banner}.png?size=1024`;
   }
 }
 
@@ -76,9 +79,7 @@ export function formatTimestamp(timestamp: number) {
 }
 
 export function intToHexColor(int: number) {
-  if (!int) return undefined;
-
-  var hex = Number(int).toString(16);
+  let hex = Number(int).toString(16);
   if (hex.length < 2) {
     hex = "0" + hex;
   }
@@ -97,3 +98,18 @@ export function snowlfakeTimestamp(snowflake: string) {
     return timestamp;
   }
 }
+export function cleanRawContent(content: string) {
+  return content
+    .replaceAll(/:[a-zA-Z0-9-_]+:/g, (match) => {
+      const emoji = emojiNames.get(match);
+      if (emoji) return emoji;
+      return match;
+    })
+    .replaceAll(/\*\*(.+)\*\*/g, (_, text) => text)
+    .replaceAll(/\*(.+)\*/g, (_, text) => text)
+    .replaceAll(/__(.+)__/g, (_, text) => text)
+    .replaceAll(/_(.+)_/g, (_, text) => text)
+    .replaceAll(/~~(.+)~~/g, (_, text) => text);
+}
+
+export const snowflakeRegex = /^[0-9]+$/;

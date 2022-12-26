@@ -20,7 +20,7 @@ export default function GuildLookup() {
       setGuildId(router.query.guild_id.toString());
       query.refetch();
     }
-  }, [router]);
+  }, [router, query, guildId]);
 
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     setGuildId(e.target.value.replace(/\D/g, "").trim());
@@ -35,11 +35,12 @@ export default function GuildLookup() {
     <div className="rounded-md bg-dark-3 p-5">
       <div className="mb-5 text-lg text-gray-300">
         Please enter a valid Discord server ID below to look it up. If you
-        aren't sure how to obtain a Discord server ID please follow the
+        aren&apos;t sure how to obtain a Discord server ID please follow the
         instructions{" "}
         <a
           href="/docs"
           target="_blank"
+          rel="noreferrer"
           className="text-blue-400 hover:text-blue-300"
         >
           here
@@ -197,12 +198,15 @@ export default function GuildLookup() {
                   type="text"
                   className="mb-2 flex-auto rounded-r-md rounded-l-md bg-dark-4 px-3 py-2 sm:mb-0 sm:rounded-r-none"
                   value={query.data.instant_invite}
-                  onChange={() => {}}
+                  onChange={() => {
+                    // don't allow changing
+                  }}
                 />
                 <a
                   className="block rounded-l-md rounded-r-md bg-blue-400 px-4 py-2 hover:bg-blue-500 sm:rounded-l-none"
                   href={query.data.instant_invite}
                   target="_blank"
+                  rel="noreferrer"
                 >
                   Join Server
                 </a>

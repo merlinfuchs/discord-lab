@@ -24,6 +24,7 @@ const Home: NextPage = () => {
           <a
             href="https://wiki.distools.app"
             target="_blank"
+            rel="noreferrer"
             className="mr-3 block transform rounded-md bg-dark-5 px-4 py-2 text-xl transition-transform hover:scale-103"
           >
             Wiki
@@ -31,6 +32,7 @@ const Home: NextPage = () => {
           <a
             href="/discord"
             target="_blank"
+            rel="noreferrer"
             className="block transform rounded-md bg-blue-500 px-4 py-2 text-xl transition-transform hover:scale-103"
           >
             Join our Discord
@@ -128,6 +130,7 @@ const Home: NextPage = () => {
           <a
             href="https://url.wtf"
             target="_blank"
+            rel="noreferrer"
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"
           >
             <div className="mr-4 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-4xl">

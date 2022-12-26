@@ -3,6 +3,7 @@ import ReactLoading from "react-loading";
 import { guildIcon, userAvatar, formatDateTime } from "../../utils/discord";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
+import { APIGuild, APIUser } from "discord-api-types/v10";
 
 export default function ResolveInvite() {
   const [invite, setInvite] = useState("");
@@ -22,8 +23,8 @@ export default function ResolveInvite() {
     }
   }, [router]);
 
-  const guild = query.data?.guild as any;
-  const inviter = query.data?.inviter as any;
+  const guild = query.data?.guild as unknown as APIGuild;
+  const inviter = query.data?.inviter as unknown as APIUser | undefined;
 
   function guildDescription() {
     const g = query.data?.guild as any;

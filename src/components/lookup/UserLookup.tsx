@@ -56,11 +56,13 @@ export default function UserLookup() {
   return (
     <div className="rounded-md bg-dark-3 p-5">
       <div className="mb-5 text-lg text-gray-300">
-        Please enter a valid Discord user ID below to look it up. If you aren't
-        sure how to obtain a Discord user ID please follow the instructions{" "}
+        Please enter a valid Discord user ID below to look it up. If you
+        aren&apos;t sure how to obtain a Discord user ID please follow the
+        instructions{" "}
         <a
           href="/docs"
           target="_blank"
+          rel="noreferrer"
           className="text-blue-400 hover:text-blue-300"
         >
           here
@@ -119,7 +121,7 @@ export default function UserLookup() {
             <div className="flex flex-wrap pt-4">
               {Object.entries(badges).map(([bit, value]) =>
                 hasBitFlag(query.data!.public_flags, parseInt(bit)) ? (
-                  <Tooltip title={value[0]} key={bit}>
+                  <Tooltip title={value[0]!} key={bit}>
                     <img
                       src={`/badges/${value[1]}`}
                       alt={value[0]}

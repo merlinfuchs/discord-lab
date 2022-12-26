@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { formatDateTime, snowlfakeTimestamp } from "../../utils/discord";
+import { formatDateTime } from "../../utils/discord";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { trpc } from "../../utils/trpc";
@@ -29,10 +29,12 @@ export default function DecodeSnowflake() {
     <div className="rounded-md bg-dark-3 p-5">
       <div className="mb-5 text-lg text-gray-300">
         Please enter a valid Snowflake (Discord ID) below to decode it. If you
-        aren't sure how to obtain a Discord ID please follow the instructions{" "}
+        aren&apos;t sure how to obtain a Discord ID please follow the
+        instructions{" "}
         <a
           href="/docs"
           target="_blank"
+          rel="noreferrer"
           className="text-blue-400 hover:text-blue-300"
         >
           here

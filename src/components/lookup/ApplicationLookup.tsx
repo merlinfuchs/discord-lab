@@ -181,6 +181,7 @@ export default function ApplicationLookup() {
                     <a
                       href={query.data.terms_of_service_url}
                       target="_blank"
+                      rel="noreferrer"
                       className="text-blue-400 hover:text-blue-300"
                     >
                       Terms of Service
@@ -194,6 +195,7 @@ export default function ApplicationLookup() {
                     <a
                       href={query.data.privacy_policy_url}
                       target="_blank"
+                      rel="noreferrer"
                       className="text-blue-400 hover:text-blue-300"
                     >
                       Privacy Policy

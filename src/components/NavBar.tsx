@@ -73,6 +73,7 @@ export default function NavBar() {
                   <a
                     href="https://url.wtf"
                     target="_blank"
+                    rel="noreferrer"
                     className={`mr-8 text-xl hover:text-blue-400`}
                   >
                     Embeddable Links
@@ -83,6 +84,7 @@ export default function NavBar() {
                   <a
                     href="https://wiki.distools.app"
                     target="_blank"
+                    rel="noreferrer"
                     className="mr-3 block transform rounded-md bg-dark-3 px-5 py-2 text-xl transition-transform hover:scale-103 lg:bg-dark-5"
                   >
                     Wiki
@@ -90,6 +92,7 @@ export default function NavBar() {
                   <a
                     href="/discord"
                     target="_blank"
+                    rel="noreferrer"
                     className="block transform rounded-md bg-blue-500 px-5 py-2 text-xl transition-transform hover:scale-103"
                   >
                     Discord

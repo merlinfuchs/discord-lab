@@ -13,42 +13,29 @@ import {
   getUser,
 } from "../server/trpc/router/lookup";
 import superjson from "superjson";
+import GuildEmbed from "../components/embed/GuildEmbed";
+import UserEmbed from "../components/embed/UserEmbed";
+import SnowflakeEmbed from "../components/embed/SnowflakeEmbed";
+import ApplicationEmbed from "../components/embed/ApplicationEmbed";
 
 interface Props {
   id: string;
   type: string | null;
-  timestamp: string;
   data: string;
 }
 
-const Embed: NextPage<Props> = ({ type, data }) => {
+const Embed: NextPage<Props> = ({ id, type, data }) => {
   if (type === "APPLICATION") {
     const application: DiscordApplication = superjson.parse(data);
-    return (
-      <Head>
-        <title>{application.name} | Discord App</title>
-      </Head>
-    );
+    return <ApplicationEmbed app={application} />;
   } else if (type === "GUILD") {
     const guild: DiscordGuild = superjson.parse(data);
-    return (
-      <Head>
-        <title>{guild.name} | Discord Server</title>
-      </Head>
-    );
+    return <GuildEmbed guild={guild} />;
   } else if (type === "USER") {
     const user: DiscordUser = superjson.parse(data);
-    return (
-      <Head>
-        <title>{user.username} | Discord User</title>
-      </Head>
-    );
+    return <UserEmbed user={user} />;
   } else {
-    return (
-      <Head>
-        <title>Embed | Discord Toolbox</title>
-      </Head>
-    );
+    return <SnowflakeEmbed id={id} />;
   }
 };
 
@@ -109,7 +96,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     props: {
       id,
       type,
-      timestamp: snowflake?.timestamp.toISOString(),
       data: superjson.stringify(data),
     },
   };

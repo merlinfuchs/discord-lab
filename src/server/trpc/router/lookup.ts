@@ -251,9 +251,19 @@ export async function getSnowflake(id: string) {
     return null;
   }
 
-  const info = await prisma.discordSnowflake.findFirst({
+  let info = await prisma.discordSnowflake.findFirst({
     where: { id, exists: true },
   });
+
+  if (info?.type === "USER") {
+    // We might have another entry for an app which has priority
+    const appInfo = await prisma.discordSnowflake.findFirst({
+      where: { id, type: "APPLICATION", exists: true },
+    });
+    if (appInfo) {
+      info = appInfo;
+    }
+  }
 
   return {
     timestamp,
