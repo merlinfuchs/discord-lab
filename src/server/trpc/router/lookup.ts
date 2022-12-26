@@ -275,7 +275,7 @@ export async function rememberSnowflakes(
   ids: string[],
   type: DiscordSnowflakeType
 ) {
-  await prisma.discordSnowflake.createMany({
+  /* TODO await prisma.discordSnowflake.createMany({
     data: ids.map((id) => ({ id, type, exists: true })),
-  });
+  }); */
 }

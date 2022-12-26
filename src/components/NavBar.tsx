@@ -16,7 +16,7 @@ export default function NavBar() {
 
   return (
     <div>
-      <div className="fixed top-0 right-0 left-0 z-50 w-screen bg-gray-100 bg-dark-3">
+      <div className="fixed top-0 right-0 left-0 z-50 w-screen bg-dark-3">
         <div className="flex h-22 items-center justify-center px-5">
           <div className="flex w-full xl:w-304">
             <div className="mr-5 flex-initial">
