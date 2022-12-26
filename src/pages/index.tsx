@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <div className="mb-16 bg-dark-3 py-32 px-5 text-center">
-        <h1 className="mb-8 text-6xl font-bold">Discord Toolbox</h1>
+        <h1 className="mb-8 text-6xl font-bold">Discord Lab</h1>
         <div className="mb-8 text-2xl text-gray-400">
           Tools for all the fellow Discord power users and nerds out there
         </div>

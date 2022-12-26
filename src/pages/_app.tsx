@@ -20,7 +20,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <>
       <Head>
-        <title>Discord Toolbox</title>
+        <title>Discord Lab</title>
         <meta
           name="description"
           content="Tools for all the fellow Discord power users and nerds out there"

@@ -6,7 +6,7 @@ export default function AccountInfoTool() {
   return (
     <div className="mt-16 flex justify-center px-3 md:px-5">
       <Head>
-        <title>Account Info | Discord Toolbox</title>
+        <title>Account Info | Discord Lab</title>
       </Head>
 
       <div className="w-full lg:w-256">

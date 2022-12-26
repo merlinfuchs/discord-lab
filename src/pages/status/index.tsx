@@ -7,7 +7,7 @@ export default function StatusTool() {
   return (
     <div className="mt-16 flex justify-center px-3 md:px-5">
       <Head>
-        <title>Discord Status | Discord Toolbox</title>
+        <title>Discord Status | Discord Lab</title>
       </Head>
 
       <div className="w-full lg:w-256">

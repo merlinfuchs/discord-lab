@@ -5,7 +5,7 @@ export default function Custom404() {
   return (
     <div className="my-20 px-5 text-center">
       <Head>
-        <title>Not Found | Discord Toolbox</title>
+        <title>Not Found | Discord Lab</title>
       </Head>
       <div className="mb-5 text-4xl font-bold">404 - Page Not Found</div>
       <div className="mb-10 text-xl text-gray-300">
