@@ -2,8 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
 export default function NavBar() {
   const router = useRouter();
@@ -34,10 +33,8 @@ export default function NavBar() {
             >
               <button className="flex items-center text-xl lg:hidden">
                 <div className="mr-2">Tools</div>
-                <div className="text-lg">
-                  <FontAwesomeIcon
-                    icon={toolsOpen ? faChevronUp : faChevronDown}
-                  />
+                <div className="h-6 w-6">
+                  {toolsOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
                 </div>
               </button>
               <div

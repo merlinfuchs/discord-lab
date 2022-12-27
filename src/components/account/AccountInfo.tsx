@@ -8,11 +8,7 @@ import {
 } from "../../utils/discord";
 import Tooltip from "../Tooltip";
 import { badges } from "../lookup/UserLookup";
-import {
-  faCheckCircle,
-  faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { trpc } from "../../utils/trpc";
 import ReactLoading from "react-loading";
 
@@ -100,15 +96,12 @@ export default function AccountInfo() {
         </div>
         <div>
           <div className="mb-2 text-xl font-bold">MFA Enabled</div>
-          <div
-            className={`text-xl ${
-              user.mfa_enabled ? "text-green-400" : "text-red-400"
-            }`}
-          >
-            <FontAwesomeIcon
-              icon={user.mfa_enabled ? faCheckCircle : faTimesCircle}
-              className="h-5 w-5"
-            />
+          <div className="h-7 w-7">
+            {user.mfa_enabled ? (
+              <CheckCircleIcon className="text-green-400" />
+            ) : (
+              <XCircleIcon className="text-red-400" />
+            )}
           </div>
         </div>
       </div>

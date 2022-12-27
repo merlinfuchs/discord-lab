@@ -11,10 +11,7 @@
   },
   "dependencies": {
     "@discordjs/rest": "^1.5.0",
-    "@fortawesome/fontawesome-svg-core": "^6.2.1",
-    "@fortawesome/free-regular-svg-icons": "^6.2.1",
-    "@fortawesome/free-solid-svg-icons": "^6.2.1",
-    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@heroicons/react": "^2.0.13",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.5.0",
     "@tanstack/react-query": "^4.16.0",

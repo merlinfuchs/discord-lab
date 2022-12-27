@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import ReactLoading from "react-loading";
 import { applicationIcon, hasBitFlag } from "../../utils/discord";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheckCircle,
-  faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 
@@ -88,87 +84,53 @@ export default function ApplicationLookup() {
           <div className="grid grid-cols-1 md:grid-cols-2 md:justify-items-center">
             <div>
               <div className="mb-1 text-xl font-bold">Bot Info</div>
-              <div className="flex text-lg">
-                <div
-                  className={`mr-2 ${
-                    query.data.bot_public ? "text-green-400" : "text-red-400"
-                  }`}
-                >
-                  <FontAwesomeIcon
-                    icon={query.data.bot_public ? faCheckCircle : faTimesCircle}
-                  />
+              <div className="flex items-center text-lg">
+                <div className="mr-1">
+                  {query.data.bot_public ? (
+                    <CheckCircleIcon className="h-6 w-6 text-green-400" />
+                  ) : (
+                    <XCircleIcon className="h-6 w-6 text-red-400" />
+                  )}
                 </div>
                 <div className="text-gray-300">Public Bot</div>
               </div>
-              <div className="flex text-lg">
-                <div
-                  className={`mr-2 ${
-                    query.data.bot_require_code_grant
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  <FontAwesomeIcon
-                    icon={
-                      query.data.bot_require_code_grant
-                        ? faCheckCircle
-                        : faTimesCircle
-                    }
-                  />
+              <div className="flex items-center text-lg">
+                <div className="mr-1">
+                  {query.data.bot_require_code_grant ? (
+                    <CheckCircleIcon className="h-6 w-6 text-green-400" />
+                  ) : (
+                    <XCircleIcon className="h-6 w-6 text-red-400" />
+                  )}
                 </div>
                 <div className="text-gray-300">Requires Code Grant</div>
               </div>
-              <div className="flex text-lg">
-                <div
-                  className={`mr-2 ${
-                    hasBitFlag(query.data.flags, 12)
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  <FontAwesomeIcon
-                    icon={
-                      hasBitFlag(query.data.flags, 12)
-                        ? faCheckCircle
-                        : faTimesCircle
-                    }
-                  />
+              <div className="flex items-center text-lg">
+                <div className="mr-1">
+                  {hasBitFlag(query.data.flags, 12) ? (
+                    <CheckCircleIcon className="h-6 w-6 text-green-400" />
+                  ) : (
+                    <XCircleIcon className="h-6 w-6 text-red-400" />
+                  )}
                 </div>
                 <div className="text-gray-300">Presence Intent</div>
               </div>
               <div className="flex text-lg">
-                <div
-                  className={`mr-2 ${
-                    hasBitFlag(query.data.flags, 14)
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  <FontAwesomeIcon
-                    icon={
-                      hasBitFlag(query.data.flags, 14)
-                        ? faCheckCircle
-                        : faTimesCircle
-                    }
-                  />
+                <div className="mr-1">
+                  {hasBitFlag(query.data.flags, 14) ? (
+                    <CheckCircleIcon className="h-6 w-6 text-green-400" />
+                  ) : (
+                    <XCircleIcon className="h-6 w-6 text-red-400" />
+                  )}
                 </div>
                 <div className="text-gray-300">Server Members Intent</div>
               </div>
               <div className="flex text-lg">
-                <div
-                  className={`mr-2 ${
-                    hasBitFlag(query.data.flags, 18)
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  <FontAwesomeIcon
-                    icon={
-                      hasBitFlag(query.data.flags, 18)
-                        ? faCheckCircle
-                        : faTimesCircle
-                    }
-                  />
+                <div className="mr-1">
+                  {hasBitFlag(query.data.flags, 18) ? (
+                    <CheckCircleIcon className="h-6 w-6 text-green-400" />
+                  ) : (
+                    <XCircleIcon className="h-6 w-6 text-red-400" />
+                  )}
                 </div>
                 <div className="text-gray-300">Message Content Intent</div>
               </div>

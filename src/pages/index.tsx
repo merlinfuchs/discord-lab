@@ -1,15 +1,14 @@
 import { type NextPage } from "next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSnowflake } from "@fortawesome/free-regular-svg-icons";
 import {
-  faLink,
-  faBuilding,
-  faHeartbeat,
-  faUser,
-  faRobot,
-  faAddressCard,
-  faPaperclip,
-} from "@fortawesome/free-solid-svg-icons";
+  LinkIcon,
+  BuildingOfficeIcon,
+  HeartIcon,
+  UserIcon,
+  CommandLineIcon,
+  IdentificationIcon,
+  PaperClipIcon,
+  CogIcon,
+} from "@heroicons/react/24/solid";
 import Link from "next/link";
 
 const Home: NextPage = () => {
@@ -46,7 +45,7 @@ const Home: NextPage = () => {
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"
           >
             <div className="mr-4 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-4xl">
-              <FontAwesomeIcon icon={faSnowflake} />
+              <CogIcon className="h-12 w-12" />
             </div>
             <div>
               <div className="text-xl font-bold">Snowflake Decoder</div>
@@ -60,7 +59,7 @@ const Home: NextPage = () => {
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"
           >
             <div className="mr-4 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-4xl">
-              <FontAwesomeIcon icon={faUser} />
+              <UserIcon className="h-12 w-12" />
             </div>
             <div>
               <div className="text-xl font-bold">User Lookup</div>
@@ -74,7 +73,7 @@ const Home: NextPage = () => {
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"
           >
             <div className="mr-4 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-4xl">
-              <FontAwesomeIcon icon={faBuilding} />
+              <BuildingOfficeIcon className="h-12 w-12" />
             </div>
             <div>
               <div className="text-xl font-bold">Server Lookup</div>
@@ -88,7 +87,7 @@ const Home: NextPage = () => {
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"
           >
             <div className="mr-4 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-4xl">
-              <FontAwesomeIcon icon={faLink} />
+              <LinkIcon className="h-12 w-12" />
             </div>
             <div>
               <div className="text-xl font-bold">Invite Resolver</div>
@@ -102,7 +101,7 @@ const Home: NextPage = () => {
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"
           >
             <div className="mr-4 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-4xl">
-              <FontAwesomeIcon icon={faRobot} />
+              <CommandLineIcon className="h-12 w-12" />
             </div>
             <div>
               <div className="text-xl font-bold">Application Lookup</div>
@@ -117,7 +116,7 @@ const Home: NextPage = () => {
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"
           >
             <div className="mr-4 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-4xl">
-              <FontAwesomeIcon icon={faAddressCard} />
+              <IdentificationIcon className="h-12 w-12" />
             </div>
             <div>
               <div className="text-xl font-bold">Account Info</div>
@@ -134,7 +133,7 @@ const Home: NextPage = () => {
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"
           >
             <div className="mr-4 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-4xl">
-              <FontAwesomeIcon icon={faPaperclip} />
+              <PaperClipIcon className="h-12 w-12" />
             </div>
             <div>
               <div className="text-xl font-bold">Embeddable Links</div>
@@ -149,7 +148,7 @@ const Home: NextPage = () => {
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"
           >
             <div className="mr-4 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-4xl">
-              <FontAwesomeIcon icon={faHeartbeat} />
+              <HeartIcon className="h-12 w-12" />
             </div>
             <div>
               <div className="text-xl font-bold">Discord Status</div>
