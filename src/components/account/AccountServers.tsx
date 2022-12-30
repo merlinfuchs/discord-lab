@@ -5,6 +5,7 @@ import CustomSelect from "../CustomSelect";
 import { trpc } from "../../utils/trpc";
 import { GuildFeature } from "discord-api-types/v10";
 import ReactLoading from "react-loading";
+import { CheckIcon, UserIcon } from "@heroicons/react/24/solid";
 
 interface SelectFilters {
   label: string;
@@ -115,11 +116,7 @@ export default function AccountServers() {
             <div className="flex flex-shrink-0 items-center space-x-3">
               {guild.owner ? (
                 <Tooltip title="Owner">
-                  <img
-                    src={`/discord-badges/server-owner.svg`}
-                    alt="Owner"
-                    className="h-5 w-5"
-                  />
+                  <UserIcon className="h-6 w-6 text-yellow-400" />
                 </Tooltip>
               ) : (
                 ""
@@ -129,9 +126,9 @@ export default function AccountServers() {
               hasBitFlag(parseInt(guild.permissions), 5) ? (
                 <Tooltip title="Moderator">
                   <img
-                    src={`/discord-badges/staff.svg`}
+                    src={`/badges/staff.svg`}
                     alt="Moderator"
-                    className="h-5 w-5"
+                    className="h-6 w-6"
                   />
                 </Tooltip>
               ) : (
@@ -140,9 +137,9 @@ export default function AccountServers() {
               {guild.features.includes(GuildFeature.Partnered) ? (
                 <Tooltip title="Partnered">
                   <img
-                    src={`/discord-badges/partner-server.svg`}
+                    src={`/badges/partnered_server_owner.svg`}
                     alt="Partnered"
-                    className="h-5 w-5"
+                    className="h-6 w-6"
                   />
                 </Tooltip>
               ) : (
@@ -150,11 +147,7 @@ export default function AccountServers() {
               )}
               {guild.features.includes(GuildFeature.Verified) ? (
                 <Tooltip title="Verified">
-                  <img
-                    src={`/discord-badges/verified-server.svg`}
-                    alt="Verified"
-                    className="h-5 w-5"
-                  />
+                  <CheckIcon className="h-6 w-6 text-green-400" />
                 </Tooltip>
               ) : (
                 ""

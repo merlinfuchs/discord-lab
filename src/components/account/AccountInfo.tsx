@@ -50,7 +50,7 @@ export default function AccountInfo() {
                 <img
                   src={`/badges/${value[1]}`}
                   alt={value[0]}
-                  className="mr-2 mb-2 h-6 w-6"
+                  className="mr-2 mb-2 h-7 w-7"
                 />
               </Tooltip>
             ) : (

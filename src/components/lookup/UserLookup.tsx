@@ -17,7 +17,7 @@ export const badges = {
   1: ["Partnered Server Owner", "partnered_server_owner.svg"],
   2: ["HypeSquad Events", "hypesquad_events.svg"],
   3: ["Bug Hunter", "bug_hunter_level_1.svg"],
-  6: ["HypeSquad Bravery", "hapesquad_bravery.svg"],
+  6: ["HypeSquad Bravery", "hypesquad_bravery.svg"],
   7: ["HypeSquad Brilliance", "hypesquad_brilliance.svg"],
   8: ["HypeSquad Balance", "hypesquad_balance.svg"],
   9: ["Early Supporter", "early_supporter.svg"],
