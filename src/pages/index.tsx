@@ -21,12 +21,12 @@ const Home: NextPage = () => {
         </div>
         <div className="flex flex-wrap justify-center">
           <a
-            href="https://wiki.distools.app"
+            href="https://github.com/merlinfuchs/discord-lab"
             target="_blank"
             rel="noreferrer"
             className="mr-3 block transform rounded-md bg-dark-5 px-4 py-2 text-xl transition-transform hover:scale-103"
           >
-            Wiki
+            Github
           </a>
           <a
             href="/discord"

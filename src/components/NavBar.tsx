@@ -71,12 +71,12 @@ export default function NavBar() {
 
                 <div className="flex flex-initial items-center text-gray-100">
                   <a
-                    href="https://wiki.distools.app"
+                    href="https://github.com/merlinfuchs/discord-lab"
                     target="_blank"
                     rel="noreferrer"
                     className="mr-3 block transform rounded-md bg-dark-3 px-5 py-2 text-xl transition-transform hover:scale-103 lg:bg-dark-5"
                   >
-                    Wiki
+                    Github
                   </a>
                   <a
                     href="/discord"
