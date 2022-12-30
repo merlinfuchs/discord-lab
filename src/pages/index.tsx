@@ -126,10 +126,8 @@ const Home: NextPage = () => {
               </div>
             </div>
           </Link>
-          <a
-            href="https://url.wtf"
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            href="embed"
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"
           >
             <div className="mr-4 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-4xl">
@@ -142,7 +140,7 @@ const Home: NextPage = () => {
                 Discord
               </div>
             </div>
-          </a>
+          </Link>
           <Link
             href="/status"
             className="mb-4 block flex transform items-center rounded-md bg-dark-4 p-5 transition-transform hover:scale-101"

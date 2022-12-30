@@ -74,7 +74,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   }
 
   if (!type) {
-    type = snowflake.type;
+    if (snowflake.types.includes("APPLICATION")) {
+      // Application takes presedence over other types like user
+      type = "APPLICATION";
+    } else {
+      type = snowflake.types[0] || null;
+    }
   }
 
   let data = null;

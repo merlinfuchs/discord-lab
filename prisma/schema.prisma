@@ -85,11 +85,9 @@ model DiscordApplication {
 }
 
 model DiscordSnowflake {
-  id     String
-  type   DiscordSnowflakeType
-  exists Boolean
-
-  @@id([id, type])
+  id         String                 @id
+  foundAs    DiscordSnowflakeType[]
+  notFoundAs DiscordSnowflakeType[]
 }
 
 enum DiscordSnowflakeType {
@@ -100,6 +98,25 @@ enum DiscordSnowflakeType {
   APPLICATION
   EMOJI
   STICKER
+}
+
+model GuildProfile {
+  guild_id String @id
+}
+
+model UserProfile {
+  user_id String @id
+}
+
+model LinkAlias { 
+  id        String   @id @default(cuid())
+  alias     String   @unique
+  target_type LinkAliasType
+  target       String   @db.Text
+}
+
+enum LinkAliasType {
+  GUILD_INVITE
 }
 
 // Necessary for Next auth

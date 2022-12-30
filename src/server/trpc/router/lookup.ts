@@ -51,7 +51,7 @@ export async function getUser(id: string): Promise<DiscordUser | null> {
   try {
     const user = (await rest.get(Routes.user(id))) as APIUser;
 
-    rememberSnowflakes([id], "USER");
+    rememberFoundSnowflakes([id], "USER");
 
     const row: DiscordUser = {
       id: user.id,
@@ -100,16 +100,16 @@ export async function getGuild(id: string): Promise<DiscordGuild | null> {
       return null;
     }
 
-    rememberSnowflakes([id], "GUILD");
-    rememberSnowflakes(
+    rememberFoundSnowflakes([id], "GUILD");
+    rememberFoundSnowflakes(
       preview?.emojis?.filter((e) => !!e.id).map((e) => e.id!) || [],
       "EMOJI"
     );
-    rememberSnowflakes(
+    rememberFoundSnowflakes(
       preview?.stickers?.filter((e) => !!e.id).map((e) => e.id!) || [],
       "STICKER"
     );
-    rememberSnowflakes(
+    rememberFoundSnowflakes(
       widget?.channels?.filter((e) => !!e.id).map((e) => e.id!) || [],
       "CHANNEL"
     );
@@ -157,7 +157,7 @@ export async function getApplication(
   try {
     const app = (await rest.get(`/applications/${id}/rpc`)) as APIApplication;
 
-    rememberSnowflakes([id], "APPLICATION");
+    rememberFoundSnowflakes([id], "APPLICATION");
 
     const row: DiscordApplication = {
       id: app.id,
@@ -204,19 +204,19 @@ export async function getInvite(code: string): Promise<DiscordInvite | null> {
     })) as APIInvite;
 
     if (invite.guild) {
-      rememberSnowflakes([invite.guild.id], "GUILD");
+      rememberFoundSnowflakes([invite.guild.id], "GUILD");
     }
 
     if (invite.channel) {
-      rememberSnowflakes([invite.channel.id], "CHANNEL");
+      rememberFoundSnowflakes([invite.channel.id], "CHANNEL");
     }
 
     if (invite.inviter) {
-      rememberSnowflakes([invite.inviter.id], "USER");
+      rememberFoundSnowflakes([invite.inviter.id], "USER");
     }
 
     if (invite.target_user) {
-      rememberSnowflakes([invite.target_user.id], "USER");
+      rememberFoundSnowflakes([invite.target_user.id], "USER");
     }
 
     const row = {
@@ -251,31 +251,26 @@ export async function getSnowflake(id: string) {
     return null;
   }
 
-  let info = await prisma.discordSnowflake.findFirst({
-    where: { id, exists: true },
-  });
-
-  if (info?.type === "USER") {
-    // We might have another entry for an app which has priority
-    const appInfo = await prisma.discordSnowflake.findFirst({
-      where: { id, type: "APPLICATION", exists: true },
-    });
-    if (appInfo) {
-      info = appInfo;
-    }
-  }
+  const info = await prisma.discordSnowflake.findUnique({ where: { id } });
 
   return {
     timestamp,
-    type: info?.type || null,
+    types: info?.foundAs || [],
   };
 }
 
-export async function rememberSnowflakes(
+export async function rememberFoundSnowflakes(
   ids: string[],
   type: DiscordSnowflakeType
 ) {
-  /* TODO await prisma.discordSnowflake.createMany({
-    data: ids.map((id) => ({ id, type, exists: true })),
-  }); */
+  await prisma.$transaction([
+    prisma.discordSnowflake.createMany({
+      data: ids.map((id) => ({ id, foundAs: [], notFoundAs: [] })),
+      skipDuplicates: true,
+    }),
+    prisma.discordSnowflake.updateMany({
+      where: { id: { in: ids } },
+      data: { foundAs: { push: type } },
+    }),
+  ]);
 }
