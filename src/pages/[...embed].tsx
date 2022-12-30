@@ -78,7 +78,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
       // Application takes presedence over other types like user
       type = "APPLICATION";
     } else {
-      type = snowflake.types[0] || null;
+      type = snowflake.types[0] || "USER";
     }
   }
 
