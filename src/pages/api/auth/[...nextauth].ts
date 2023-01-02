@@ -26,6 +26,10 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  session: {
+    // discord oauth tokens are currently valid for 14 days so 7 days is a safe bet
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+  },
 };
 
 export default NextAuth(authOptions);
